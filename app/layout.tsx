@@ -98,6 +98,11 @@ export default function RootLayout({
     // Umami: add to <head>: <script data-website-id="f397a6ab-a050-427e-995a-45610c078845" defer src="https://analytics.pertermann.de/script.js"></script>
     <html lang="de" suppressHydrationWarning translate="no">
       <head>
+        <script
+          data-website-id="e5f5dcf0-1da4-4b7a-a8ed-62424f345e3b"
+          defer
+          src="https://analytics.pertermann.de/script.js"
+        ></script>
         <PlausibleProvider
           customDomain="https://plausible.pertermann.de"
           domain="pertermann.de"
