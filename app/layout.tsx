@@ -104,13 +104,9 @@ export default function RootLayout({
           src="https://analytics.pertermann.de/script.js"
         ></script>
         <PlausibleProvider
-          customDomain="https://plausible.pertermann.de"
-          domain="pertermann.de"
+          src="https://plausible.pertermann.de/js/pa-HyTKpnMN5qHsOBw_Ma4yO.js"
           enabled={true}
-          selfHosted={true}
-          trackFileDownloads={true}
-          // trackLocalhost={true}
-          trackOutboundLinks={true}
+        // init={{ captureOnLocalhost: true }}
         />
       </head>
       <body
