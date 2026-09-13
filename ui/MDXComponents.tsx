@@ -3,32 +3,44 @@ import Card from '../app/components/card';
 import ExternalLink from './ExternalLink';
 import Flashcard from './Flashcard';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
-import Image from 'next/image';
+import Image, { type ImageProps } from 'next/image';
 import Link from 'next/link';
+import type { ComponentPropsWithoutRef } from 'react';
 
-const CustomLink = (props: any) => {
-  const href = props.href;
-  const isInternalLink = href && href.startsWith('/');
+const CustomLink = ({
+  href = '',
+  children,
+  ...props
+}: ComponentPropsWithoutRef<'a'>) => {
+  const isInternalLink = href.startsWith('/');
 
   if (isInternalLink) {
     return (
       <Link href={href} {...props}>
-        {props.children}
+        {children}
       </Link>
     );
   }
 
   if (href.startsWith('#')) {
-    return <a {...props} />;
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
   }
 
-  return <ExternalLink href={href} {...props} />;
+  return (
+    <ExternalLink href={href} {...props}>
+      {children}
+    </ExternalLink>
+  );
 };
 
-function RoundedImage(props: any) {
+function RoundedImage({ alt, ...props }: ImageProps) {
   return (
     <Image
-      alt={props.alt}
+      alt={alt}
       className="rounded-lg"
       {...props}
       style={{
@@ -52,6 +64,7 @@ export function Mdx({ code }: { code: string }) {
 
   return (
     <article className="prose-quoteless prose prose-neutral dark:prose-invert">
+      {/* eslint-disable-next-line react-hooks/static-components -- useMDXComponent memoizes the compiled component per `code` */}
       <Component components={components} />
     </article>
   );

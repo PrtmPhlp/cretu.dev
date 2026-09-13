@@ -10,7 +10,7 @@ export function GitHubLogo({ className }: IconProps) {
       className={cn(
         className
           ? className
-          : 'h-auto w-6 fill-current text-gray-900 text-opacity-60 transition-all duration-200 hover:text-opacity-100 dark:text-white dark:text-opacity-60 dark:hover:text-opacity-100',
+          : 'text-opacity-60 hover:text-opacity-100 dark:text-opacity-60 dark:hover:text-opacity-100 h-auto w-6 fill-current text-gray-900 transition-all duration-200 dark:text-white',
       )}
       fill="none"
       height="15"
@@ -34,7 +34,7 @@ export function TwitterLogo({ className }: IconProps) {
       className={cn(
         className
           ? className
-          : 'h-auto w-6 fill-current text-gray-900 text-opacity-60 transition-all duration-200 hover:text-opacity-100 dark:text-white dark:text-opacity-60 dark:hover:text-opacity-100',
+          : 'text-opacity-60 hover:text-opacity-100 dark:text-opacity-60 dark:hover:text-opacity-100 h-auto w-6 fill-current text-gray-900 transition-all duration-200 dark:text-white',
       )}
       fill="none"
       height="16"

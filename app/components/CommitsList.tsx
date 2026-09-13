@@ -68,7 +68,7 @@ const CommitsList: React.FC = () => {
         </ol>
         {/* Gradient overlay with Tailwind CSS for light and dark mode */}
         <div
-          className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-b from-transparent to-white dark:to-gray-900"
+          className="pointer-events-none absolute right-0 bottom-0 left-0 bg-gradient-to-b from-transparent to-white dark:to-gray-900"
           style={{ height: '200px' }} // Ensure gradient height is 250px
         />
       </div>

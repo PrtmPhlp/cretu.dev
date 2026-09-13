@@ -1,4 +1,4 @@
-import { allWritings } from '.contentlayer/generated';
+import { allWritings } from '@/.contentlayer/generated';
 import { mdxToHtml } from '@/lib/mdxToHtml';
 import { headers } from 'next/headers';
 

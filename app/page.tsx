@@ -1,4 +1,4 @@
-import { allWritings } from '.contentlayer/generated';
+import { allWritings } from '@/.contentlayer/generated';
 import { cn } from '@/lib/className';
 import { getRelativeTimeString } from '@/lib/relativeDate';
 import ExternalLink from '@/ui/ExternalLink';
@@ -58,7 +58,7 @@ async function Header() {
             objectFit: 'contain',
           }}
         />
-        <div className="absolute -bottom-2 -right-2 rounded-full bg-white px-1 py-0.5 text-sm dark:bg-gray-900">
+        <div className="absolute -right-2 -bottom-2 rounded-full bg-white px-1 py-0.5 text-sm dark:bg-gray-900">
           ✨
         </div>
       </div>
@@ -83,8 +83,8 @@ function AboutMe() {
           Currently working at{' '}
           <ExternalLink arrow={true} href="https://pico.group">
             Picosoft
-          </ExternalLink>. 
-          Building multiple projects and apps, some of them you can find here,
+          </ExternalLink>
+          . Building multiple projects and apps, some of them you can find here,
           some you don&apos;t. Also look at my{' '}
           <ExternalLink arrow={true} href="https://github.com/PrtmPhlp">
             Github
@@ -168,7 +168,7 @@ function Contact() {
         />
         <ContactLink
           href="/resume"
-          target='_self'
+          target="_self"
           title="view"
           website="Resume"
         />

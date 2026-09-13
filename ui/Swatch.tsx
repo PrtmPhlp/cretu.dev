@@ -3,6 +3,7 @@
 import { GitHubLogo, TwitterLogo } from './Icons';
 import { Themes, Navigation, Socials } from '@/data/cmd';
 import { cn } from '@/lib/className';
+import { useMounted } from '@/lib/useMounted';
 import {
   HomeIcon,
   BookOpenIcon,
@@ -16,6 +17,7 @@ import {
   useAnimation,
   useMotionValue,
   useTransform,
+  type PanInfo,
 } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
@@ -23,11 +25,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Swatch() {
   const [animate, setAnimate] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const { resolvedTheme, setTheme } = useTheme();
 
   const [isFocused, setIsFocused] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [relativeConstraints, setRelativeConstraints] = useState({
     left: 0,
     right: 0,
@@ -44,11 +46,9 @@ export default function Swatch() {
     return Themes;
   }, [mounted, resolvedTheme]);
 
-  useEffect(() => setMounted(true), []);
-
   useEffect(() => {
     if (ref.current) {
-      const rect = (ref.current as any).getBoundingClientRect();
+      const rect = ref.current.getBoundingClientRect();
       const halfWidth = rect.width / 2;
       setRelativeConstraints({
         left: -halfWidth,
@@ -60,11 +60,11 @@ export default function Swatch() {
       if (isFocused) setIsFocused(false);
     };
 
-    const handleClickOutside = (event: { target: any }) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         isFocused &&
         ref.current &&
-        !(ref.current as any).contains(event.target)
+        !ref.current.contains(event.target as Node)
       ) {
         setIsFocused(false);
       }
@@ -78,13 +78,17 @@ export default function Swatch() {
     };
   }, [isFocused, ref]);
 
-  const handleDrag = (_: any, info: { point: { x: number } }) => {
+  const handleDrag = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
     const isFullyVisible = info.point.x >= relativeConstraints.right;
     setIsFocused(isFullyVisible);
   };
 
   useEffect(() => {
     if (animate && !isFocused) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- collapse the sub menu once the swatch loses focus
       setAnimate(false);
     }
   }, [animate, isFocused]);
@@ -125,9 +129,9 @@ export default function Swatch() {
           <Link
             className={cn(
               'flex h-14 w-12 cursor-pointer flex-col items-center space-y-1 p-2 transition-all duration-200',
-              index === 0 ? 'rounded-b-lg rounded-t-xl' : 'rounded-lg',
+              index === 0 ? 'rounded-t-xl rounded-b-lg' : 'rounded-lg',
               index === 0 ? 'bg-[#7786FE]' : 'bg-[#9CB7FF]',
-              'transition-all duration-200 hover:bg-opacity-80',
+              'hover:bg-opacity-80 transition-all duration-200',
             )}
             href={!isFocused ? '' : item.href!}
             key={index}
@@ -136,11 +140,11 @@ export default function Swatch() {
             {item.keywords === 'writing' && (
               <BookOpenIcon className="h-6 w-6" />
             )}
-            <span className="select-none text-xs">{item.name}</span>
+            <span className="text-xs select-none">{item.name}</span>
           </Link>
         ))}
         <div
-          className="flex h-14 w-12 cursor-crosshair select-none flex-col items-center justify-center rounded-b-xl rounded-t-lg bg-[#ADC9FA] p-2"
+          className="flex h-14 w-12 cursor-crosshair flex-col items-center justify-center rounded-t-lg rounded-b-xl bg-[#ADC9FA] p-2 select-none"
           onClick={() => {
             const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
 
@@ -163,7 +167,7 @@ export default function Swatch() {
             // x: animate ? 65 : 0,
             y: animate ? 5 : 0,
           }}
-          className="absolute left-0 right-0 top-0 flex w-fit flex-col items-center space-y-2 rounded-xl rounded-t-2xl bg-gray-200 p-1.5 dark:bg-gray-800"
+          className="absolute top-0 right-0 left-0 flex w-fit flex-col items-center space-y-2 rounded-xl rounded-t-2xl bg-gray-200 p-1.5 dark:bg-gray-800"
           exit={{ opacity: 0, rotate: 0, scale: 0, x: 0, y: 0 }}
           initial={{ opacity: 0, rotate: 0, scale: 0, x: 0, y: 0 }}
           style={{ rotate }}
@@ -173,9 +177,9 @@ export default function Swatch() {
             <div
               className={cn(
                 'flex h-14 w-12 cursor-pointer flex-col items-center space-y-1 p-2 transition-all duration-200',
-                index === 0 ? 'rounded-b-lg rounded-t-xl' : 'rounded-lg',
+                index === 0 ? 'rounded-t-xl rounded-b-lg' : 'rounded-lg',
                 index === 0 ? 'bg-[#CC697D]' : 'bg-[#E19DC2]',
-                'transition-all duration-200 hover:bg-opacity-80',
+                'hover:bg-opacity-80 transition-all duration-200',
               )}
               key={index}
               onClick={() => {
@@ -184,7 +188,7 @@ export default function Swatch() {
             >
               {item.keywords === 'github' && <GitHubLogo />}
               {item.keywords === 'twitter' && <TwitterLogo />}{' '}
-              <span className="select-none text-xs">{item.name}</span>
+              <span className="text-xs select-none">{item.name}</span>
             </div>
           ))}
           <div className="h-14 w-12"></div>
@@ -202,7 +206,7 @@ export default function Swatch() {
             // x: animate ? 70 : 0,
             y: animate ? 69 : 0,
           }}
-          className="absolte left-0 right-0 top-0 flex w-fit flex-col items-center space-y-2 rounded-xl rounded-t-2xl bg-gray-200 p-1.5 dark:bg-gray-800"
+          className="absolte top-0 right-0 left-0 flex w-fit flex-col items-center space-y-2 rounded-xl rounded-t-2xl bg-gray-200 p-1.5 dark:bg-gray-800"
           exit={{
             opacity: 0,
             rotate: 0,
@@ -219,9 +223,9 @@ export default function Swatch() {
               <div
                 className={cn(
                   'flex h-14 w-12 cursor-pointer flex-col items-center space-y-1 p-2 transition-all duration-200',
-                  index === 0 ? 'rounded-b-lg rounded-t-xl' : 'rounded-lg',
+                  index === 0 ? 'rounded-t-xl rounded-b-lg' : 'rounded-lg',
                   index === 0 ? 'bg-[#BC7BFD]' : 'bg-[#D5ACFF]',
-                  'transition-all duration-200 hover:bg-opacity-80',
+                  'hover:bg-opacity-80 transition-all duration-200',
                 )}
                 key={index}
                 onClick={() => setTheme(item.keywords!)}
@@ -231,7 +235,7 @@ export default function Swatch() {
                 {item.keywords === 'system' && (
                   <ComputerDesktopIcon className="h-6 w-6" />
                 )}
-                <span className="touch-none select-none text-xs">
+                <span className="touch-none text-xs select-none">
                   {item.name}
                 </span>
               </div>

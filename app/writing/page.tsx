@@ -1,4 +1,4 @@
-import { allWritings } from '.contentlayer/generated';
+import { allWritings } from '@/.contentlayer/generated';
 import { cn } from '@/lib/className';
 import { getRelativeTimeString } from '@/lib/relativeDate';
 import { pick } from 'contentlayer2/client';

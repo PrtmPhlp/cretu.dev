@@ -15,21 +15,11 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
-import {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-  type JSX,
-} from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 
 export default function RollingMenu() {
   const [expanded, setExpanded] = useState(false);
-  const ref =
-    useRef<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>>(
-      undefined,
-    );
+  const ref = useRef<HTMLDivElement>(null);
   const { resolvedTheme, setTheme } = useTheme();
 
   const memoizedActions = actions.filter((action) => {
@@ -74,7 +64,7 @@ export default function RollingMenu() {
 
     const handleOutsideClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if ((ref.current as any)?.contains(target)) return;
+      if (ref.current?.contains(target)) return;
 
       setExpanded(false);
     };
@@ -120,11 +110,11 @@ export default function RollingMenu() {
   });
 
   return (
-    <div className="flex items-center" ref={ref as any}>
+    <div className="flex items-center" ref={ref}>
       <motion.button
         animate={{ rotate: expanded ? 45 : 0 }}
         aria-label="Navigation Menu"
-        className="flex h-12 w-12 select-none items-center justify-center rounded-full bg-black dark:bg-white m-2"
+        className="m-2 flex h-12 w-12 items-center justify-center rounded-full bg-black select-none dark:bg-white"
         onClick={handleClick}
         whileTap={{ scale: 1.1 }}
       >
@@ -165,7 +155,7 @@ export default function RollingMenu() {
                         : 'button'
                   }
                   className={cn(
-                    'flex h-12 w-12 cursor-pointer select-none items-center justify-center transition-all duration-200',
+                    'flex h-12 w-12 cursor-pointer items-center justify-center transition-all duration-200 select-none',
                     'rounded-full',
                     `bg-[${action.color}]`,
                   )}
@@ -237,10 +227,12 @@ function Comp({
   children,
   ...props
 }: {
-  [key: string]: any;
-  as: any;
+  [key: string]: unknown;
+  as: React.ElementType;
   children: React.ReactNode;
 }): JSX.Element {
-  const Component = as;
+  // Fully dynamic element (`Link`, `a`, `button`, …): the props are whatever
+  // the caller forwards, so widen to a generic component type.
+  const Component = as as React.ComponentType<Record<string, unknown>>;
   return <Component {...props}>{children}</Component>;
 }

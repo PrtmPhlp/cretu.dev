@@ -72,8 +72,8 @@ const contentLayerConfig = makeSource({
         },
       ],
       rehypeKatex,
-    ] as any,
-    remarkPlugins: [remarkGfm, remarkMath] as any,
+    ],
+    remarkPlugins: [remarkGfm, remarkMath],
   },
 });
 

@@ -6,7 +6,7 @@ const RESUME_CDN_USER = process.env.RESUME_CDN_USER;
 const RESUME_CDN_PASS = process.env.RESUME_CDN_PASS;
 
 const RATE_LIMIT_WINDOW_MS = Number(
-  process.env.RESUME_RATE_LIMIT_WINDOW_MS ?? 900000,
+  process.env.RESUME_RATE_LIMIT_WINDOW_MS ?? 900_000,
 );
 const RATE_LIMIT_MAX_ATTEMPTS = Number(
   process.env.RESUME_RATE_LIMIT_MAX_ATTEMPTS ?? 10,
@@ -141,14 +141,14 @@ export async function POST(request: NextRequest) {
     }
 
     return jsonNoStore({ content }, 200);
-  } catch (err) {
-    if (err instanceof SyntaxError) {
+  } catch (error) {
+    if (error instanceof SyntaxError) {
       return jsonNoStore({ error: 'Ungültige Anfrage' }, 400);
     }
 
     const isTimeout =
-      (err instanceof DOMException && err.name === 'TimeoutError') ||
-      (err instanceof Error && err.name === 'AbortError');
+      (error instanceof DOMException && error.name === 'TimeoutError') ||
+      (error instanceof Error && error.name === 'AbortError');
 
     if (isTimeout) {
       console.error('CDN fetch timed out');
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error('Unexpected resume API error:', err);
+    console.error('Unexpected resume API error:', error);
     return jsonNoStore({ error: 'Interner Fehler' }, 500);
   }
 }

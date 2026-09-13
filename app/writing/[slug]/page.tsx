@@ -1,5 +1,5 @@
 import '../../../styles/prose.css';
-import { Writing, allWritings } from '@/.contentlayer/generated';
+import { allWritings } from '@/.contentlayer/generated';
 import CommitSection from '@/app/writing/CommitSection';
 import DateViewer from '@/ui/DateView';
 import ExternalLink from '@/ui/ExternalLink';
@@ -89,7 +89,7 @@ export default async function WritingPost({
         suppressHydrationWarning
         type="application/ld+json"
       ></script>
-      <p className="text-tertiary -ml-1 mb-2 w-fit rounded-md bg-gray-200 px-1.5 py-0.5 font-mono text-sm dark:bg-gray-800">
+      <p className="text-tertiary mb-2 -ml-1 w-fit rounded-md bg-gray-200 px-1.5 py-0.5 font-mono text-sm dark:bg-gray-800">
         <DateViewer date={post.publishedAt} />
       </p>
       <h1 className="text-primary text-3xl font-semibold">{post.title}</h1>

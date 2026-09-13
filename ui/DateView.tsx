@@ -1,14 +1,10 @@
 'use client';
 
 import { getRelativeTimeString } from '@/lib/relativeDate';
-import React from 'react';
+import { useMounted } from '@/lib/useMounted';
 
 const DateViewer = ({ date }: { date: string }) => {
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   return (
     <span className="font-mono text-sm">

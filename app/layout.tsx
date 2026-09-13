@@ -104,16 +104,16 @@ export default function RootLayout({
           src="https://analytics.pertermann.de/script.js"
         ></script>
         <PlausibleProvider
-          src="https://plausible.pertermann.de/js/pa-HyTKpnMN5qHsOBw_Ma4yO.js"
           enabled={true}
-        // init={{ captureOnLocalhost: true }}
+          src="https://plausible.pertermann.de/js/pa-HyTKpnMN5qHsOBw_Ma4yO.js"
+          // init={{ captureOnLocalhost: true }}
         />
       </head>
       <body
         className={cn(
           `${inter.className}`,
           'h-full, min-h-screen, relative w-full',
-          'my-4 bg-white dark:bg-gray-900 sm:my-24',
+          'my-4 bg-white sm:my-24 dark:bg-gray-900',
           'motion-reduce:transform-none motion-reduce:transition-none',
         )}
       >

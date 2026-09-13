@@ -4,4 +4,4 @@ pnpm-lock.yaml
 .contentlayer/
 data/
 node_modules/
-.next/
+.next/next-env.d.ts

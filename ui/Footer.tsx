@@ -3,11 +3,11 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
-import { IcosahedronGeometry } from 'three';
+import { IcosahedronGeometry, type Group } from 'three';
 
 export default function Footer() {
   return (
-    <footer className="text-quaternary mx-auto max-w-2xl py-12 pb-24 pt-4 text-sm dark:text-gray-600">
+    <footer className="text-quaternary mx-auto max-w-2xl py-12 pt-4 pb-24 text-sm dark:text-gray-600">
       <FooterGraphic />
       <p className="flex flex-col gap-4">
         © 2022 - {new Date().getFullYear()} pertermann
@@ -30,11 +30,11 @@ export default function Footer() {
 }
 
 function PixelatedSphere() {
-  const sphereRef = useRef(undefined);
-  useFrame(({ clock }: { clock: any }) => {
+  const sphereRef = useRef<Group>(null);
+  useFrame(({ clock }) => {
     if (sphereRef.current) {
-      (sphereRef.current as any).rotation.y = clock.getElapsedTime() * 1.2;
-      (sphereRef.current as any).rotation.z = clock.getElapsedTime() * 0.7;
+      sphereRef.current.rotation.y = clock.getElapsedTime() * 1.2;
+      sphereRef.current.rotation.z = clock.getElapsedTime() * 0.7;
     }
   });
 
@@ -51,7 +51,7 @@ function PixelatedSphere() {
   }
 
   return (
-    <group ref={sphereRef as any}>
+    <group ref={sphereRef}>
       {vertices.map((pos, i) => (
         <mesh key={i} position={pos}>
           <sphereGeometry args={[0.01, 8, 8]} />
@@ -63,25 +63,20 @@ function PixelatedSphere() {
 }
 
 function Birds() {
-  const groupRef = useRef(undefined);
+  const groupRef = useRef<Group>(null);
 
-  useFrame(({ clock }: { clock: any }) => {
+  useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const elapsedTime = clock.getElapsedTime();
-    (groupRef.current as any).children.forEach(
-      (
-        bird: { position: { x: number; y: number; z: number } },
-        index: number,
-      ) => {
-        const angle = (elapsedTime + index * 0.2) % (2 * Math.PI);
-        const radius = 2.3 + Math.random() * 0.0001;
-        bird.position.x =
-          radius * Math.cos(angle) - Math.sin(elapsedTime * 0.5 + index);
-        bird.position.y =
-          radius * Math.sin(angle) * Math.sin(elapsedTime * 0.5 + index);
-        bird.position.z = radius * Math.cos(elapsedTime * 0.5 + index);
-      },
-    );
+    groupRef.current.children.forEach((bird, index) => {
+      const angle = (elapsedTime + index * 0.2) % (2 * Math.PI);
+      const radius = 2.3 + Math.random() * 0.0001;
+      bird.position.x =
+        radius * Math.cos(angle) - Math.sin(elapsedTime * 0.5 + index);
+      bird.position.y =
+        radius * Math.sin(angle) * Math.sin(elapsedTime * 0.5 + index);
+      bird.position.z = radius * Math.cos(elapsedTime * 0.5 + index);
+    });
   });
 
   const birds = [...Array(48)].map((_, i) => {
@@ -94,7 +89,7 @@ function Birds() {
     );
   });
 
-  return <group ref={groupRef as any}>{birds}</group>;
+  return <group ref={groupRef}>{birds}</group>;
 }
 
 function FooterGraphic() {
